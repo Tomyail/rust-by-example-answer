@@ -27,16 +27,28 @@ struct Rectangle {
     bottom_right: Point,
 }
 
-fn rect_area(rect: Rectangle)->f32 {
+fn rect_area(rect: &Rectangle) -> f32 {
     let Rectangle {
         top_left: Point { x: top, y: left },
         bottom_right: Point {
             x: bottom,
             y: right,
         },
-    }: Rectangle = rect;
+    } = rect;
+    ((top - bottom) * (right - left)).abs()
+}
 
-    (top - bottom) * (right - left)
+fn square(point: &Point, val: f32) -> Rectangle {
+    Rectangle {
+        top_left: Point {
+            x: point.x,
+            y: point.y + val,
+        },
+        bottom_right: Point {
+            x: point.x + val,
+            y: point.y,
+        },
+    }
 }
 
 fn main() {
@@ -90,6 +102,15 @@ fn main() {
     let Pair(integer, decimal) = pair;
 
     println!("pair contains {:?} and {:?}", integer, decimal);
-    println!("area info {:?}", _rectangle);
-    println!("area {:?}",rect_area(_rectangle));
+
+    let _rect2 = Rectangle {
+        top_left: Point { x: 1.0, y: 2.0 },
+        bottom_right: Point { x: 22.0, y: 3.0 },
+    };
+    println!("area {:?}", rect_area(&_rect2));
+    println!("area info {:?}", (&_rect2));
+
+    let my_rect= square(&Point { x: 1.0, y: 1.0 }, 2.0);
+    println!("area {:?}", rect_area(&my_rect));
+    println!("square {:?}", my_rect);
 }
